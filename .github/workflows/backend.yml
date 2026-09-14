@@ -65,4 +65,3 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           NODE_ENV: production
-
