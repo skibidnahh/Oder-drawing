@@ -1,4 +1,4 @@
-name: Deploy Backend to Vercel
+Name: Deploy Backend to Vercel
 
 on:
   push:
@@ -10,7 +10,6 @@ jobs:
   deploy-backend:
     name: Deploy Backend to Vercel
     runs-on: ubuntu-latest
-    environment: production  ← Thêm dòng này
 
     steps:
       - name: Checkout code
@@ -56,7 +55,6 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           APP_ORIGIN: ${{ secrets.APP_ORIGIN }}
           HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
@@ -69,7 +67,6 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           NODE_ENV: production
 
