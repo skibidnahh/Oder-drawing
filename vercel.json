@@ -1,0 +1,14 @@
+{
+  "name": "oder-drawing-api",
+  "buildCommand": "pnpm --filter @workspace/api-server run build",
+  "outputDirectory": "dist",
+  "framework": "nodejs",
+  "regions": ["sin1"],
+  "env": {
+    "NODE_ENV": "production",
+    "DATABASE_URL": "@database_url",
+    "SESSION_SECRET": "@session_secret",
+    "APP_ORIGIN": "@app_origin",
+    "HUGGINGFACE_API_KEY": "@huggingface_api_key"
+  }
+}
