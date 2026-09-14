@@ -1,0 +1,689 @@
+Bạn là một Senior Full-Stack Web Developer.
+
+Tôi muốn bạn xây dựng một WEBSITE ĐẶT TRANH ONLINE HOÀN CHỈNH, có thể deploy lên Internet và cho nhiều người sử dụng thật.
+
+Tên website:
+
+🐰 USAGI ART ORDER
+
+Đây KHÔNG phải là yêu cầu làm mockup hoặc HTML demo.
+
+Website phải có:
+
+- Frontend hoạt động thật
+- Backend hoạt động thật
+- Database thật
+- Authentication thật
+- Phân quyền User/Admin
+- Upload và lưu ảnh thật
+- Dữ liệu không bị mất khi refresh
+- Có thể deploy thành website công khai
+
+==================================================
+QUY TẮC QUAN TRỌNG
+==================================================
+
+1. Không chỉ làm giao diện.
+
+2. Không sử dụng dữ liệu giả/mock data thay cho database.
+
+3. Không dùng localStorage làm database chính.
+
+4. Không hardcode mật khẩu Admin trong JavaScript frontend.
+
+5. Không chỉ ẩn nút Admin ở giao diện. Phân quyền phải được bảo vệ ở backend/database.
+
+6. Sau khi hoàn thành từng phần, hãy kiểm tra logic và sửa lỗi.
+
+7. Website phải ưu tiên điện thoại vì phần lớn người dùng sẽ truy cập bằng mobile.
+
+8. Giao diện sử dụng tiếng Việt.
+
+9. Code phải được tổ chức rõ ràng và dễ bảo trì.
+
+10. Nếu cần chọn công nghệ, hãy chọn giải pháp đơn giản, miễn phí hoặc có free tier phù hợp với website nhỏ.
+
+==================================================
+MỤC TIÊU WEBSITE
+==================================================
+
+Website dùng để học sinh/người dùng:
+
+Đăng ký tài khoản
+↓
+Chờ Admin duyệt
+↓
+Đăng nhập
+↓
+Chọn gói giá
+↓
+Điền yêu cầu tranh
+↓
+Trả lời câu hỏi
+↓
+Gửi ảnh tham khảo
+↓
+Gửi đơn
+↓
+Theo dõi trạng thái đơn
+↓
+Nhận ghi chú từ Admin
+
+Admin sẽ:
+
+- Duyệt tài khoản
+- Từ chối tài khoản
+- Quản lý toàn bộ đơn
+- Xem ảnh khách gửi
+- Thay đổi trạng thái đơn
+- Viết ghi chú cho từng đơn
+- Quản lý các gói giá
+- Mở/đóng từng gói
+- Tự động đóng gói khi đủ số lượng
+
+==================================================
+1. CÔNG NGHỆ
+==================================================
+
+Hãy tự chọn stack phù hợp.
+
+Ưu tiên:
+
+Frontend:
+- HTML
+- CSS
+- JavaScript
+
+Hoặc framework hiện đại nếu thực sự cần thiết.
+
+Backend + Database + Authentication + Storage:
+
+Có thể dùng Supabase hoặc Firebase.
+
+Ưu tiên giải pháp:
+
+- Dễ triển khai
+- Có free tier
+- Phù hợp website nhỏ
+- Không cần server chạy trên máy cá nhân
+
+Trước khi code, hãy đề xuất stack ngắn gọn và giải thích vì sao.
+
+Sau đó xây dựng project.
+
+==================================================
+2. THIẾT KẾ GIAO DIỆN
+==================================================
+
+Tên:
+
+🐰 USAGI ART ORDER
+
+Phong cách:
+
+- Cute
+- Anime
+- Pastel
+- Hồng pastel
+- Tím nhạt
+- Kem
+- Trắng
+- Hiện đại
+- Premium
+- Không quá rối
+- Bo góc mềm
+- Shadow nhẹ
+- Animation mượt
+- Mobile-first
+
+Các ảnh Usagi tôi cung cấp phải được sử dụng ở vị trí hợp lý.
+
+Không:
+
+- Kéo méo ảnh
+- Làm ảnh che nội dung
+- Nhồi quá nhiều ảnh khiến giao diện rối
+
+==================================================
+3. POPUP THÔNG BÁO KHI VÀO WEB
+==================================================
+
+Khi người dùng vào website, hiển thị một popup thông báo.
+
+Popup có:
+
+- Ảnh Usagi tôi cung cấp
+- Nút X ở góc phải
+- Nút xác nhận
+
+Nội dung chính xác:
+
+"ad vẽ khá xấu nên ae có gì thông cảm cho ad nhé, đừng trách ad tại chỉ muốn kiếm thêm thu nhập chứ free nhiều cũng mệt 😭"
+
+Nút:
+
+"Tôi hiểu rồi 😭"
+
+Cả:
+
+- Nút X
+- Nút "Tôi hiểu rồi 😭"
+
+đều phải đóng popup thật.
+
+Có animation xuất hiện nhẹ.
+
+==================================================
+4. TRANG CHỦ
+==================================================
+
+Trang chủ gồm:
+
+HEADER
+
+Logo:
+
+🐰 USAGI ART ORDER
+
+Navigation:
+
+- Trang chủ
+- Đặt tranh
+- Đơn của tôi
+- Đăng nhập hoặc Tài khoản
+
+Hero section:
+
+Tiêu đề:
+
+"Đặt tranh online 🎨"
+
+Mô tả:
+
+"Điền yêu cầu, gửi ảnh tham khảo và chờ ad xem đơn nha 😭🎨"
+
+Có ảnh Usagi phù hợp.
+
+Nút lớn:
+
+"BẮT ĐẦU ĐẶT TRANH"
+
+Logic:
+
+Nếu chưa đăng nhập:
+→ chuyển tới Đăng nhập
+
+Nếu đăng nhập nhưng tài khoản đang chờ Admin duyệt:
+→ hiển thị trạng thái chờ
+
+Nếu tài khoản bị từ chối:
+→ hiển thị trạng thái từ chối và ghi chú Admin
+
+Nếu tài khoản đã được duyệt:
+→ chuyển tới Đặt tranh
+
+==================================================
+5. HỆ THỐNG TÀI KHOẢN
+==================================================
+
+Có hai role:
+
+USER
+
+ADMIN
+
+Role phải được lưu trong database.
+
+Không được dựa hoàn toàn vào frontend.
+
+==================================================
+6. ĐĂNG KÝ TÀI KHOẢN
+==================================================
+
+Form đăng ký:
+
+- Tên thật
+- Lớp
+- Cách liên hệ
+- Email hoặc tên đăng nhập
+- Mật khẩu
+- Nhập lại mật khẩu
+
+Hiển thị ghi chú:
+
+"Vui lòng nhập tên thật để Admin dễ xác nhận người đặt tranh."
+
+Sau khi đăng ký:
+
+Tài khoản KHÔNG được phép sử dụng ngay.
+
+Trạng thái:
+
+PENDING
+
+Hiển thị:
+
+🟡 TÀI KHOẢN ĐANG CHỜ ADMIN DUYỆT
+
+Người dùng không được phép đặt tranh cho đến khi Admin duyệt.
+
+==================================================
+7. ĐĂNG NHẬP
+==================================================
+
+Người dùng đăng nhập bằng:
+
+- Email/tên đăng nhập
+- Mật khẩu
+
+Nếu:
+
+PENDING
+
+Hiển thị:
+
+🟡
+"Tài khoản của bạn đang chờ Admin duyệt."
+
+Nếu:
+
+REJECTED
+
+Hiển thị:
+
+🔴
+"Yêu cầu tạo tài khoản của bạn chưa được chấp nhận."
+
+Nếu có ghi chú:
+
+📝 Ghi chú từ Admin
+
+[nội dung]
+
+Nếu:
+
+APPROVED
+
+→ cho phép sử dụng website.
+
+==================================================
+8. ADMIN PANEL
+==================================================
+
+Chỉ Admin mới được truy cập.
+
+Nếu User cố truy cập Admin Panel:
+
+→ từ chối truy cập
+→ chuyển về trang phù hợp
+
+Admin Panel có sidebar hoặc navigation rõ ràng:
+
+👥 Duyệt tài khoản
+
+📦 Quản lý đơn
+
+💰 Quản lý gói
+
+📊 Thống kê
+
+==================================================
+9. DUYỆT TÀI KHOẢN
+==================================================
+
+Admin xem danh sách User mới đăng ký.
+
+Mỗi User hiển thị:
+
+- Tên thật
+- Lớp
+- Cách liên hệ
+- Email/tên đăng nhập
+- Ngày đăng ký
+- Trạng thái
+
+Admin có nút:
+
+✓ DUYỆT
+
+✕ TỪ CHỐI
+
+Admin có ô ghi chú.
+
+Sau khi duyệt:
+
+APPROVED
+
+Sau khi từ chối:
+
+REJECTED
+
+User nhìn thấy trạng thái và ghi chú khi đăng nhập.
+
+==================================================
+10. GÓI GIÁ
+==================================================
+
+Website có các gói:
+
+5K
+
+10K
+
+15K
+
+25K
+
+Mỗi gói phải có cấu hình:
+
+- Tên gói
+- Giá
+- Số lượng đơn tối đa
+- Số lượng đơn hiện tại
+- Trạng thái mở/đóng
+
+Admin có thể:
+
+- Chỉnh giá
+- Chỉnh giới hạn số lượng
+- Mở nhận
+- Đóng nhận
+
+Ví dụ:
+
+🟢 ĐANG NHẬN
+
+hoặc
+
+🔴 TẠM ĐÓNG
+
+==================================================
+11. TỰ ĐỘNG ĐÓNG GÓI
+==================================================
+
+Mỗi gói có:
+
+maximum_orders
+
+current_orders
+
+Khi:
+
+current_orders >= maximum_orders
+
+gói phải tự động chuyển sang:
+
+🔴 TẠM ĐÓNG
+
+Người dùng không thể gửi đơn vào gói đó.
+
+Logic kiểm tra phải an toàn ở backend/database.
+
+Phải tránh trường hợp nhiều người gửi đơn cùng lúc làm số lượng vượt giới hạn.
+
+Admin vẫn có thể:
+
+- Tăng giới hạn
+- Mở lại gói
+- Đóng thủ công
+
+==================================================
+12. FORM ĐẶT TRANH
+==================================================
+
+Mỗi lần đặt tương ứng với 1 đơn / 1 tranh.
+
+Form nhiều bước.
+
+------------------------------
+
+BƯỚC 1
+
+Thông tin người đặt:
+
+- Tên thật
+- Lớp
+- Cách liên hệ
+
+Có thể lấy tự động từ tài khoản.
+
+------------------------------
+
+BƯỚC 2
+
+Chọn gói:
+
+- 5K
+- 10K
+- 15K
+- 25K
+
+Chỉ cho chọn gói đang mở.
+
+------------------------------
+
+BƯỚC 3
+
+Yêu cầu tranh:
+
+- Muốn vẽ gì?
+- Loại tranh
+- Phong cách vẽ
+- Kích thước
+- Màu sắc
+- Mô tả thêm
+
+------------------------------
+
+BƯỚC 4
+
+CÂU HỎI ĐẶC BIỆT
+
+Câu hỏi:
+"Tranh này dùng để làm gì?"
+
+Lựa chọn:
+
+🎁 Quà tặng
+
+🏠 Trang trí
+
+👤 Cá nhân
+
+Bỏ qua
+
+Câu hỏi:
+
+"Bạn có muốn thêm chữ vào tranh không?"
+
+Nếu chọn:
+
+CÓ
+
+→ hiện ô:
+
+"Bạn muốn thêm chữ gì?"
+
+Nếu chọn:
+
+KHÔNG
+
+→ ẩn ô này.
+
+Đây phải là dynamic form.
+
+Thiết kế code sao cho sau này có thể thêm câu hỏi mới.
+
+------------------------------
+
+BƯỚC 5
+
+GỬI ẢNH THAM KHẢO
+
+User có thể:
+
+- Upload ảnh
+- Upload nhiều ảnh
+- Xem preview
+- Xóa ảnh trước khi gửi
+
+Ảnh phải upload vào storage thật.
+
+Không chỉ lưu temporary preview.
+
+Admin phải xem được ảnh.
+
+------------------------------
+
+BƯỚC 6
+
+XEM LẠI
+
+Hiển thị:
+
+- Gói
+- Giá
+- Thông tin
+- Yêu cầu tranh
+- Các câu trả lời
+- Số ảnh
+
+Có nút:
+
+← SỬA
+
+và:
+
+GỬI ĐƠN 🎨
+
+==================================================
+13. SAU KHI GỬI ĐƠN
+==================================================
+
+Sau khi thành công:
+
+🎉 GỬI ĐƠN THÀNH CÔNG
+
+"Đơn của bạn đã được gửi và đang chờ Admin xem xét."
+
+Đơn phải được liên kết với:
+
+user_id
+
+==================================================
+14. TRẠNG THÁI ĐƠN
+==================================================
+
+Sử dụng chính xác các trạng thái:
+
+🟡 ĐANG CHỜ DUYỆT
+
+Admin chưa quyết định.
+
+↓
+
+🟢 ĐÃ NHẬN ĐƠN
+
+Admin đồng ý nhận đơn.
+
+↓
+
+🎨 ĐANG VẼ
+
+Admin đang vẽ.
+
+↓
+
+📦 HOÀN THÀNH
+
+Tranh đã hoàn thành.
+
+Hoặc:
+
+🔴 TỪ CHỐI
+
+Admin không nhận đơn.
+
+Các trạng thái phải có:
+
+- Icon
+- Màu
+- Text rõ ràng
+
+==================================================
+15. ĐƠN CỦA TÔI
+==================================================
+
+User có trang:
+
+📦 ĐƠN CỦA TÔI
+
+CHỈ hiển thị đơn của chính tài khoản đó.
+
+User A tuyệt đối không thể xem đơn của User B.
+
+Mỗi đơn hiển thị:
+
+- Gói
+- Giá
+- Ngày đặt
+- Trạng thái
+- Ảnh thumbnail
+- Ghi chú mới nhất từ Admin
+
+Bấm vào đơn để xem:
+
+- Toàn bộ yêu cầu
+- Ảnh tham khảo
+- Trạng thái
+- Lịch sử trạng thái nếu có
+- Toàn bộ ghi chú Admin
+
+==================================================
+16. GHI CHÚ ADMIN
+==================================================
+
+Admin có thể ghi chú riêng cho từng đơn.
+
+Ví dụ:
+
+"Ad đã nhận đơn của bạn nha 😭 Sẽ bắt đầu vẽ sau khi xử lý các đơn trước."
+
+Hoặc:
+
+"Ad đang vẽ rồi nha."
+
+Hoặc:
+
+"Tranh đã hoàn thành."
+
+Admin có thể:
+
+- Thêm ghi chú
+- Sửa ghi chú
+- Xóa ghi chú
+
+Ưu tiên hỗ trợ nhiều ghi chú theo thời gian.
+
+Mỗi ghi chú có:
+
+- Nội dung
+- Thời gian tạo
+- Admin tạo
+
+User chỉ xem ghi chú của đơn thuộc tài khoản mình.
+
+==================================================
+17. ADMIN QUẢN LÝ ĐƠN
+==================================================
+Admin xem toàn bộ đơn.
+
+Có filter:
+
+🟡 Chờ duyệt
+
+🟢 Đã nhận đơn
+
+🎨 Đang vẽ
+
+📦 Hoàn tiền
