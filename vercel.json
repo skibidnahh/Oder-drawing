@@ -1,6 +1,4 @@
 {
   "buildCommand": "pnpm --filter @workspace/api-server run build",
-  "outputDirectory": "artifacts/api-server/dist",
-  "framework": "node",
-  "regions": ["sin1"]
+  "outputDirectory": "artifacts/api-server/dist"
 }
