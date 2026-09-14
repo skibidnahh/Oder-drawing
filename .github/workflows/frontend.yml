@@ -1,10 +1,7 @@
-name: 🚀 Deploy Frontend to GitHub Pages
+name: Deploy Frontend to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
@@ -14,52 +11,52 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: false
 
 jobs:
   build:
-    name: 🏗️ Build Frontend
+    name: Build Frontend
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout code
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: 🔧 Setup pnpm
+      - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 9
 
-      - name: 🟢 Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'
+          cache: pnpm
 
-      - name: 📦 Install dependencies
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: ✅ TypeScript check
+      - name: TypeScript check
         run: pnpm run typecheck:libs
         continue-on-error: true
 
-      - name: 🎨 Build frontend (usagi-art-order)
+      - name: Build frontend
         run: pnpm --filter @workspace/usagi-art-order run build
         env:
           BASE_PATH: /Oder-drawing/
           PORT: 3000
           VITE_API_URL: ${{ secrets.FRONTEND_API_URL }}
 
-      - name: 📤 Upload artifact to GitHub Pages
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './artifacts/usagi-art-order/dist/public'
+          path: ./artifacts/usagi-art-order/dist/public
 
   deploy:
-    name: 🌐 Deploy to GitHub Pages
+    name: Deploy to GitHub Pages
     needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -69,9 +66,9 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: 🚀 Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: ✅ Frontend deployment successful
-        run: echo "✅ Frontend live at: ${{ steps.deployment.outputs.page_url }}"
+      - name: Deployment complete
+        run: echo "Frontend deployed successfully"
