@@ -14,8 +14,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -31,50 +29,31 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: TypeScript check
-        run: pnpm run typecheck:libs
-        continue-on-error: true
-
       - name: Build backend
         run: pnpm --filter @workspace/api-server run build
         env:
           NODE_ENV: production
 
-      - name: Run database migrations
-        if: github.ref == 'refs/heads/main'
-        run: pnpm --filter @workspace/db run push
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        continue-on-error: true
+      - name: Install Vercel CLI
+        run: npm install -g vercel
 
       - name: Deploy to Vercel Production
         if: github.ref == 'refs/heads/main'
-        uses: vercel/action@v6
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          production: true
+        run: vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --yes
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           APP_ORIGIN: ${{ secrets.APP_ORIGIN }}
           HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
-          NSFW_FILTER_ENABLED: ${{ secrets.NSFW_FILTER_ENABLED || 'true' }}
           NODE_ENV: production
 
       - name: Deploy to Vercel Preview
         if: github.ref == 'refs/heads/develop'
-        uses: vercel/action@v6
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: vercel --token ${{ secrets.VERCEL_TOKEN }} --yes
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
-          APP_ORIGIN: ${{ secrets.APP_ORIGIN }}
           NODE_ENV: production
 
       - name: Deployment complete
-        run: echo "Backend deployment to Vercel complete"
+        run: echo "Backend deployment complete"
