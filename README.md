@@ -55,4 +55,4 @@ Admin có thể dùng `POST /api/admin/import/users` hoặc giao diện Admin. P
 - Không commit `.env`, `SESSION_SECRET`, `DATABASE_URL` hoặc thư mục `uploads`.
 - Cấu hình build frontend bằng package `@workspace/usagi-art-order` và chạy API bằng `@workspace/api-server`.
 - Với nền tảng Node truyền thống, chạy migration/schema push trước khi mở traffic.
-- Dùng HTTPS để cookie production có cờ `Secure`.
+- Dùng HTTPS để cookie production có cờ `Secure`.# Fixed lock files
