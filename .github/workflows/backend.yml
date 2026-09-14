@@ -1,4 +1,4 @@
-Name: Deploy Backend to Vercel
+name: Deploy Backend to Vercel
 
 on:
   push:
