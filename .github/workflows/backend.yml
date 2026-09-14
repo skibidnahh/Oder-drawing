@@ -10,7 +10,6 @@ jobs:
   deploy-backend:
     name: Deploy Backend to Vercel
     runs-on: ubuntu-latest
-    environment: production
 
     steps:
       - name: Checkout code
@@ -51,7 +50,7 @@ jobs:
 
       - name: Deploy to Vercel Production
         if: github.ref == 'refs/heads/main'
-        run: vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --yes
+        run: vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --yes --project-name oder-drawing-api
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -62,7 +61,7 @@ jobs:
 
       - name: Deploy to Vercel Preview
         if: github.ref == 'refs/heads/develop'
-        run: vercel --token ${{ secrets.VERCEL_TOKEN }} --yes
+        run: vercel --token ${{ secrets.VERCEL_TOKEN }} --yes --project-name oder-drawing-api
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
