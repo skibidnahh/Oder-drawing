@@ -6,32 +6,41 @@ import {
   S3Client,
 } from "@aws-sdk/client-s3";
 
-// Cloudflare R2 dùng API tương thích S3, nên có thể dùng thẳng @aws-sdk/client-s3.
-// Cần 4 biến môi trường: R2_ACCOUNT_ID, R2_BUCKET, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY.
+// Adapter S3-compatible dùng chung được cho Cloudflare R2, Backblaze B2,
+// hoặc bất kỳ dịch vụ nào nói tương thích S3. Chỉ cần đổi 4 biến môi trường,
+// không cần sửa code.
+//
+// S3_ENDPOINT ví dụ:
+//   Cloudflare R2:  https://<ACCOUNT_ID>.r2.cloudflarestorage.com
+//   Backblaze B2:   https://s3.<region>.backblazeb2.com  (vd: s3.us-west-002.backblazeb2.com)
 
 let client: S3Client | null = null;
 
 function getConfig() {
-  const accountId = process.env.R2_ACCOUNT_ID;
-  const bucket = process.env.R2_BUCKET;
-  const accessKeyId = process.env.R2_ACCESS_KEY_ID;
-  const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY;
+  const endpoint = process.env.S3_ENDPOINT;
+  const bucket = process.env.S3_BUCKET;
+  const accessKeyId = process.env.S3_ACCESS_KEY_ID;
+  const secretAccessKey = process.env.S3_SECRET_ACCESS_KEY;
+  const region = process.env.S3_REGION || "auto";
 
-  if (!accountId || !bucket || !accessKeyId || !secretAccessKey) {
+  if (!endpoint || !bucket || !accessKeyId || !secretAccessKey) {
     throw new Error(
-      "Thiếu cấu hình Cloudflare R2 (R2_ACCOUNT_ID, R2_BUCKET, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY).",
+      "Thiếu cấu hình lưu trữ ảnh (S3_ENDPOINT, S3_BUCKET, S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY).",
     );
   }
-  return { accountId, bucket, accessKeyId, secretAccessKey };
+  return { endpoint, bucket, accessKeyId, secretAccessKey, region };
 }
 
 function getClient(): { s3: S3Client; bucket: string } {
-  const { accountId, bucket, accessKeyId, secretAccessKey } = getConfig();
+  const { endpoint, bucket, accessKeyId, secretAccessKey, region } = getConfig();
   if (!client) {
     client = new S3Client({
-      region: "auto",
-      endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
+      region,
+      endpoint,
       credentials: { accessKeyId, secretAccessKey },
+      // Backblaze B2 (và một số dịch vụ S3-compatible khác) cần path-style thay vì
+      // virtual-hosted-style. Bật luôn cho an toàn, không ảnh hưởng tới R2.
+      forcePathStyle: true,
     });
   }
   return { s3: client, bucket };
