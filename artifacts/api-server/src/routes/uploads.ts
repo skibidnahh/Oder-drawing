@@ -1,14 +1,15 @@
 import { Router, type IRouter } from "express";
-import { mkdir, readFile, unlink, writeFile } from "node:fs/promises";
-import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { requireAuth } from "../middlewares/auth";
 import { audit } from "../lib/audit";
+import { checkImageForNsfw } from "../lib/nsfw-filter";
+import { deleteObject, getObject, objectExists, putObject } from "../lib/storage";
 
 const router: IRouter = Router();
 const allowedTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
-const maxBytes = 5 * 1024 * 1024;
-const uploadRoot = path.resolve(process.env.UPLOAD_DIR || "uploads");
+// Vercel giới hạn cứng dung lượng request body ở 4.5MB (không thể tăng).
+// Để dưới mức đó một chút cho an toàn (còn chỗ cho header).
+const maxBytes = 4 * 1024 * 1024;
 
 function extensionFor(contentType: string): string {
   if (contentType === "image/png") return "png";
@@ -27,12 +28,39 @@ router.post("/uploads", requireAuth, async (req, res): Promise<void> => {
     res.status(413).json({ error: "Ảnh phải lớn hơn 0 và không quá 5MB." });
     return;
   }
-  const ownerDir = path.join(uploadRoot, req.user!.id);
-  await mkdir(ownerDir, { recursive: true });
+
+  try {
+    const nsfwResult = await checkImageForNsfw(body, contentType);
+    if (nsfwResult.blocked) {
+      await audit(req.user!.id, "BLOCK_NSFW_UPLOAD", "file", null, {
+        label: nsfwResult.label,
+        score: nsfwResult.score,
+      });
+      res.status(422).json({
+        error:
+          "Ảnh có nội dung khoả thân/nhạy cảm nên không thể tải lên. Ảnh mặc đồ bình thường, bikini hoặc nội y vẫn được chấp nhận.",
+      });
+      return;
+    }
+  } catch {
+    res.status(503).json({ error: "Không thể kiểm duyệt ảnh lúc này, vui lòng thử lại sau." });
+    return;
+  }
+
   const fileName = `${randomUUID()}.${extensionFor(contentType)}`;
   const objectKey = `${req.user!.id}/${fileName}`;
-  await writeFile(path.join(ownerDir, fileName), body, { flag: "wx" });
-  await audit(req.user!.id, "UPLOAD_REFERENCE", "file", objectKey, { contentType, byteSize: body.length });
+
+  try {
+    await putObject(objectKey, body, contentType);
+  } catch {
+    res.status(502).json({ error: "Không thể lưu ảnh lúc này, vui lòng thử lại." });
+    return;
+  }
+
+  await audit(req.user!.id, "UPLOAD_REFERENCE", "file", objectKey, {
+    contentType,
+    byteSize: body.length,
+  });
   res.status(201).json({ objectKey, url: `/api/uploads/${objectKey}`, byteSize: body.length });
 });
 
@@ -47,18 +75,13 @@ router.get("/uploads/:ownerId/:fileName", requireAuth, async (req, res): Promise
     res.status(400).json({ error: "Tên ảnh không hợp lệ." });
     return;
   }
-  const absolutePath = path.resolve(uploadRoot, ownerId, fileName);
-  const allowedPrefix = `${path.resolve(uploadRoot, ownerId)}${path.sep}`;
-  if (!absolutePath.startsWith(allowedPrefix)) {
-    res.status(400).json({ error: "Đường dẫn không hợp lệ." });
+  const objectKey = `${ownerId}/${fileName}`;
+  const object = await getObject(objectKey);
+  if (!object) {
+    res.status(404).json({ error: "Không tìm thấy ảnh." });
     return;
   }
-  try {
-    const content = await readFile(absolutePath);
-    res.type(path.extname(fileName)).send(content);
-  } catch {
-    res.status(404).json({ error: "Không tìm thấy ảnh." });
-  }
+  res.type(object.contentType || "application/octet-stream").send(object.body);
 });
 
 router.delete("/uploads/:ownerId/:fileName", requireAuth, async (req, res): Promise<void> => {
@@ -72,13 +95,14 @@ router.delete("/uploads/:ownerId/:fileName", requireAuth, async (req, res): Prom
     res.status(400).json({ error: "Tên ảnh không hợp lệ." });
     return;
   }
-  try {
-    await unlink(path.resolve(uploadRoot, ownerId, fileName));
-    await audit(req.user?.id ?? null, "DELETE_UPLOAD", "file", `${ownerId}/${fileName}`);
-  } catch {
+  const objectKey = `${ownerId}/${fileName}`;
+  const exists = await objectExists(objectKey);
+  if (!exists) {
     res.status(404).json({ error: "Không tìm thấy ảnh." });
     return;
   }
+  await deleteObject(objectKey);
+  await audit(req.user?.id ?? null, "DELETE_UPLOAD", "file", objectKey);
   res.status(204).send();
 });
 
