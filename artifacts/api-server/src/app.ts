@@ -43,7 +43,7 @@ if (process.env.NODE_ENV === "production" && !cookieSecret) {
   throw new Error("SESSION_SECRET must be set in production.");
 }
 app.use(cookieParser(cookieSecret || "development-only-cookie-secret"));
-app.use("/api/uploads", express.raw({ type: ["image/jpeg", "image/png", "image/webp"], limit: "5mb" }));
+app.use("/api/uploads", express.raw({ type: ["image/jpeg", "image/png", "image/webp"], limit: "4mb" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(loadUser);
